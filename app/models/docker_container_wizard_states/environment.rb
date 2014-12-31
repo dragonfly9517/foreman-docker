@@ -12,7 +12,13 @@ module DockerContainerWizardStates
              :validate => false
     include ::ParameterValidators
 
+    has_many :dns_servers, :dependent  => :destroy, :foreign_key => :reference_id,
+         :inverse_of => :environment,
+         :class_name => 'DockerContainerWizardStates::DnsServer',
+         :validate => false
+
     accepts_nested_attributes_for :environment_variables, :allow_destroy => true
+    accepts_nested_attributes_for :dns_servers, :allow_destroy => true
 
     def parameters_symbol
       :environment_variables

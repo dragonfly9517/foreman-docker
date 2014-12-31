@@ -15,6 +15,13 @@
         <% end %>
         <%= link_to_add_fields(_("Add environment variable"), f, :environment_variables,
                                'foreman_docker/common_parameters/environment_variable') %>
+                               
+        <h3><%= _("DNS Config") %></h3>
+        <%= f.fields_for :dns_servers, @environment.dns_servers do |builder| %>
+          <%= render 'foreman_docker/common_parameters/dns_servers', :f => builder %>
+        <% end %>
+        <%= link_to_add_fields(_("Add DNS Server"), f, :dns_servers,
+                               'foreman_docker/common_parameters/dns_servers') %>                               
       </div>
    </div>
    <%= render :partial => 'form_buttons' %>

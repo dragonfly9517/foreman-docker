@@ -4,12 +4,17 @@ module Service
       ActiveRecord::Base.transaction do
         container = Container.new(wizard_state.container_attributes) do |r|
           # eagerly load environment variables
-          state = DockerContainerWizardState.includes(:environment => [:environment_variables])
+          state = DockerContainerWizardState.includes(:environment => [:environment_variables , :dns_servers])
             .find(wizard_state.id)
           state.environment_variables.each do |e|
             r.environment_variables.build(
                 :name => e.name, :value => e.value, :priority => e.priority)
           end
+          #load dns server confid details
+          state.dns_servers.each do |e|
+            r.dns_servers.build(
+                :name => e.name, :priority => e.priority)
+          end          
         end
 
         started = start_container(container)
